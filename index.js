@@ -17,23 +17,25 @@ const isPrime = (num) => {
 };
 
 const isPerfect = (num) => {
+  if (num < 1) return false;
   let sum = 1;
   for (let i = 2; i <= Math.sqrt(num); i++) {
     if (num % i === 0) {
       sum += i + (i !== num / i ? num / i : 0);
     }
   }
-  return sum === num && num !== 1;
+  return sum === num;
 };
 
 const isArmstrong = (num) => {
-  const digits = num.toString().split('').map(Number);
+  const absNum = Math.abs(num);
+  const digits = absNum.toString().split('').map(Number);
   const power = digits.length;
-  return digits.reduce((sum, d) => sum + Math.pow(d, power), 0) === num;
+  return digits.reduce((sum, d) => sum + Math.pow(d, power), 0) === absNum;
 };
 
 const digitSum = (num) => {
-  return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+  return Math.abs(num).toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
 };
 
 const getProperties = (num) => {
@@ -48,7 +50,7 @@ app.get('/api/classify-number', async (req, res) => {
   const number = parseInt(numberStr);
 
   if (isNaN(number)) {
-    return res.status(400).json({ number: "alphabet", error: true });
+    return res.status(400).json({ number: numberStr, error: true });
   }
 
   try {
