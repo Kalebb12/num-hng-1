@@ -65,7 +65,7 @@ app.get('/api/classify-number', async (req, res) => {
       digit_sum: digitSum(number),
       fun_fact: factResponse.data,
     };
-    res.json({ number, ...result });
+    res.status(200).json({ number, ...result });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch fun fact." });
   }
