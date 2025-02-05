@@ -52,8 +52,11 @@ app.get('/api/classify-number', async (req, res) => {
 
   const number = parseInt(numberStr);
 
-  if (isNaN(number)) {
-    return res.status(400).json({ error: true, number: numberStr });
+  if (!Number.isInteger(number)) {
+    return res.status(400).json({
+     "number": "alphabet",
+     "error": true
+ });
   }
 
   try {
