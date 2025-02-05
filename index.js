@@ -17,7 +17,7 @@ const isPrime = (num) => {
 };
 
 const isPerfect = (num) => {
-  if (num <= 0) return false;
+  if (num < 1) return false;
   let sum = 1;
   for (let i = 2; i <= Math.sqrt(num); i++) {
     if (num % i === 0) {
@@ -28,28 +28,33 @@ const isPerfect = (num) => {
 };
 
 const isArmstrong = (num) => {
+  if (num < 0) return false;
   const digits = num.toString().split('').map(Number);
   const power = digits.length;
   return digits.reduce((sum, d) => sum + Math.pow(d, power), 0) === num;
 };
 
 const digitSum = (num) => {
-  return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+  return Math.abs(num).toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
 };
 
 const getProperties = (num) => {
   const props = [];
-  if (isArmstrong(num)) props.push("armstrong");
+  if (num >= 0 && isArmstrong(num)) props.push("armstrong");
   props.push(num % 2 === 0 ? "even" : "odd");
   return props;
 };
 
 app.get('/api/classify-number', async (req, res) => {
   const numberStr = req.query.number;
+  if (!numberStr) {
+    return res.status(400).json({ error: true, number: "" });
+  }
+
   const number = parseInt(numberStr);
 
   if (isNaN(number)) {
-    return res.status(400).json({ number: "alphabet", error: true });
+    return res.status(400).json({ error: true, number: numberStr });
   }
 
   try {
